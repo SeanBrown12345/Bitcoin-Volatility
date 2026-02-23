@@ -7,7 +7,7 @@ import joblib
 
 FEATURES = ["vol_5d", "vol_20d", "vol_30d", "return_5d", "vol_change", "close"]
 
-btc = yf.download("BTC-USD", start="2014-01-01", auto_adjust=True)
+btc = yf.download("BTC-USD", start="2023-01-01", auto_adjust=True)
 btc = btc[["Close", "Volume"]].dropna()
 
 btc["log_return"] = np.log(btc["Close"] / btc["Close"].shift(1))
