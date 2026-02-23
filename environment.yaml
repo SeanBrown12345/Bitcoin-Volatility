@@ -20,4 +20,3 @@ dependencies:
   - nltk
   - nb_conda_kernels
   - scikit-learn=1.7.1
-prefix: C:\Users\upwaz\miniforge3\envs\bitcoin
