@@ -39,5 +39,5 @@ payload = {
     "next_vol_pred": next_vol_pred,
 }
 
-with open("output/bitcoin_vol_forecast.json", "w") as f:
+with open("public/bitcoin_vol_forecast.json", "w") as f:
     json.dump(payload, f, indent=2)
