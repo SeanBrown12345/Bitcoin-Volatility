@@ -1,0 +1,23 @@
+name: bitcoin
+channels:
+  - conda-forge
+dependencies:
+  - spacy
+  - matplotlib
+  - plotly
+  - seaborn
+  - python=3.12
+  - pandas
+  - ipykernel
+  - umap-learn
+  - datasets
+  - wordcloud
+  - pytorch
+  - pip
+  - yellowbrick
+  - autograd
+  - panel
+  - nltk
+  - nb_conda_kernels
+  - scikit-learn=1.7.1
+prefix: C:\Users\upwaz\miniforge3\envs\bitcoin
