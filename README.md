@@ -1,6 +1,6 @@
 # Bitcoin Volatility Forecasting
 
-Dashhboard Webpage: https://seanbrown.io/bitcoin
+Dashboard Webpage: https://seanbrown.io/bitcoin
 
 Machine Learning–Based Forecasting of 5-Day Forward Realized Volatility for Bitcoin.
 
