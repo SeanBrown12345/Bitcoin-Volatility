@@ -8,6 +8,10 @@ import joblib
 FEATURES = ["vol_5d", "vol_20d", "vol_30d", "return_5d", "vol_change", "close"]
 
 btc = yf.download("BTC-USD", start="2023-01-01", auto_adjust=True)
+# yfinance can return MultiIndex columns on CI runners even for a single ticker.
+if isinstance(btc.columns, pd.MultiIndex):
+    btc.columns = btc.columns.get_level_values(0)
+
 btc = btc[["Close", "Volume"]].dropna()
 
 btc["log_return"] = np.log(btc["Close"] / btc["Close"].shift(1))
@@ -23,6 +27,10 @@ model = joblib.load("models/btc_vol_xgb.joblib")
 
 last_week_actual = btc["vol_5d"].dropna().iloc[-7:]
 model_input = btc.dropna(subset=FEATURES)
+
+if model_input.empty:
+    raise RuntimeError("No rows with complete feature values were available for forecasting.")
+
 as_of_ts = model_input.index[-1]
 last_x = model_input[FEATURES].iloc[[-1]]
 next_vol_pred = float(model.predict(last_x)[0])
