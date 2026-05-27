@@ -8,7 +8,7 @@ import joblib
 FEATURES = ["vol_5d", "vol_20d", "vol_30d", "return_5d", "vol_change", "close"]
 
 btc = yf.download("BTC-USD", start="2023-01-01", auto_adjust=True)
-# yfinance can return MultiIndex columns on CI runners even for a single ticker.
+
 if isinstance(btc.columns, pd.MultiIndex):
     btc.columns = btc.columns.get_level_values(0)
 
@@ -32,7 +32,18 @@ if model_input.empty:
     raise RuntimeError("No rows with complete feature values were available for forecasting.")
 
 as_of_ts = model_input.index[-1]
-last_x = model_input[FEATURES].iloc[[-1]]
+
+booster_features = model.get_booster().feature_names
+if booster_features:
+    source_features = [name.strip() for name in booster_features]
+    missing = [name for name in source_features if name not in model_input.columns]
+    if missing:
+        raise RuntimeError(f"Model expects missing source features: {missing}")
+    last_x = model_input[source_features].iloc[[-1]].copy()
+    last_x.columns = booster_features
+else:
+    last_x = model_input[FEATURES].iloc[[-1]]
+
 next_vol_pred = float(model.predict(last_x)[0])
 
 future_dates = pd.bdate_range(as_of_ts + pd.Timedelta(days=1), periods=5)
